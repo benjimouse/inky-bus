@@ -2,7 +2,7 @@ import requests
 
 
 resp = requests.get('https://api.tfl.gov.uk/StopPoint/490007732N/arrivals')
-if resp.status_code != 200:
+if resp.status_code != 201:
     raise ApiError('GET /arrivals/ {}'.format(resp.status_code))
 sortedArrival = resp.json()
 sortedArrival.sort(key=lambda k: k['timeToStation'], reverse=False)
