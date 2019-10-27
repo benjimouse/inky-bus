@@ -4,7 +4,8 @@ from time import sleep
 from datetime import datetime, timezone, date, timedelta
 from dateutil.parser import parser, isoparse
 argParser = argparse.ArgumentParser()
-argParser.add_argument('--type', '-t', type=str, required=True, choices=["inky", "print"], help="Display to inky or to cmd line")
+argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
+argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
 args = argParser.parse_args()
 
 _lastCheck = datetime.now()
@@ -20,21 +21,16 @@ def get_bus_time():
     _lastCheck = datetime.now()
     arrivals = []
     for bus in sortedArrival:
-            
-       # print('{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']))
-        #print('time to live {}'.format(isoparse(bus['timeToLive'])))
         bus_arrival = {}
         bus_arrival['timeToStation'] = bus['timeToStation']
         bus_arrival['lineName'] = bus['lineName']
         bus_arrival['ttl'] = isoparse(bus['timeToLive'])
         bus_arrival['destinationName'] = bus['destinationName']
         arrivals.append(bus_arrival)
-       # arrivals = arrivals + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
 
     return arrivals
 
 def formatMessage(arrivals):
-    #message = '{}\n'.format(datetime.now().strftime('%H:%M:%S'))
     message = ''
     for bus in arrivals:
 
@@ -87,22 +83,22 @@ oldTimes = []
 maxSleep = 20
 
 while True:
-    print ('getting times')
     busTimes = get_bus_time()
     if oldTimes != busTimes:
-        print('times changed')
         oldTimes = busTimes
         reRunTime = busTimes[0]['ttl']
         for bus in busTimes:
             if bus['ttl'] < reRunTime:
                 reRunTime = bus['ttl']
-        displayOnCmd(busTimes)
-        if args.type == "inky":
+        if args.cmd == "true":
+            displayOnCmd(busTimes)
+        if args.inky == "true":
             displayOnInky(busTimes)
         timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
         timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
     else:
-        print('times not changed')
+        if args.cmd == "true":
+            print('No change')
         timeToSleep = maxSleep
     sleep(timeToSleep)
 else:
