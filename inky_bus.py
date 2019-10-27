@@ -47,7 +47,7 @@ def formatMessage(arrivals):
 def displayOnInky(busTimes):
     from PIL import Image, ImageFont, ImageDraw
     from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
-    from font_intuitive import Intuitive
+    from font_fredoka_one import FredokaOne
     from inky import InkyPHAT
 
     inky_display = InkyPHAT("red")
@@ -57,9 +57,9 @@ def displayOnInky(busTimes):
     draw = ImageDraw.Draw(img)
 
     lastCheckSize = 15
-    lastCheckFont = ImageFont.truetype(Intuitive, lastCheckSize)
+    lastCheckFont = ImageFont.truetype(FredokaOne, lastCheckSize)
     lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
-    messageFont = ImageFont.truetype(Intuitive, int(78 / (len(busTimes))))
+    messageFont = ImageFont.truetype(FredokaOne, int(78 / (len(busTimes))))
     message = formatMessage(busTimes)
     
     #Display at top left
