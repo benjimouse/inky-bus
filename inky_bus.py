@@ -42,11 +42,6 @@ def formatMessage(arrivals):
         message = message + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
     
     return message
-busTimes = get_bus_time()
-print ('Num busses = {}'.format(len(busTimes)))
-print  (formatMessage(busTimes))
-if args.type == "inky":
-    displayOnInky()
 
 def displayOnInky():
     from PIL import Image, ImageFont, ImageDraw
@@ -70,3 +65,9 @@ def displayOnInky():
     draw.text((x, y), message, inky_display.RED, font)
     inky_display.set_image(img)
     inky_display.show()
+
+busTimes = get_bus_time()
+print ('Num busses = {}'.format(len(busTimes)))
+print  (formatMessage(busTimes))
+if args.type == "inky":
+    displayOnInky()
