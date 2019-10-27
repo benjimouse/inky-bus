@@ -48,7 +48,7 @@ def displayOnInky(busTimes):
     from PIL import Image, ImageFont, ImageDraw
     from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
     from font_source_serif_pro import SourceSerifProSemibold
-    from font_source_sans_pro import SourceSansProSemibold
+    from font_source_sans_pro import SourceSansProMedium
     from inky import InkyPHAT
 
     inky_display = InkyPHAT("red")
@@ -58,9 +58,9 @@ def displayOnInky(busTimes):
     draw = ImageDraw.Draw(img)
 
     lastCheckSize = 15
-    lastCheckFont = ImageFont.truetype(SourceSansProSemibold, lastCheckSize)
+    lastCheckFont = ImageFont.truetype(SourceSansProMedium, lastCheckSize)
     lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
-    messageFont = ImageFont.truetype(SourceSansProSemibold, int(78 / (len(busTimes))))
+    messageFont = ImageFont.truetype(SourceSansProMedium, int(78 / (len(busTimes))))
     message = formatMessage(busTimes)
     
     #Display at top left
