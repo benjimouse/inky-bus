@@ -58,9 +58,9 @@ def displayOnInky(busTimes):
     draw = ImageDraw.Draw(img)
 
     lastCheckSize = 15
-    lastCheckFont = ImageFont.truetype(SourceSerifProSemibold, lastCheckSize)
+    lastCheckFont = ImageFont.truetype(SourceSansProSemibold, lastCheckSize)
     lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
-    messageFont = ImageFont.truetype(SourceSerifProSemibold, int(78 / (len(busTimes))))
+    messageFont = ImageFont.truetype(SourceSansProSemibold, int(78 / (len(busTimes))))
     message = formatMessage(busTimes)
     
     #Display at top left
