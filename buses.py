@@ -11,7 +11,7 @@ draw = ImageDraw.Draw(img)
 
 font = ImageFont.truetype(HankenGroteskBold, int(35 * scale_size))
 
-message = "Hello, World!\nBen"
+message = "Hello, World! \n Ben"
 w, h = font.getsize(message)
 x = (inky_display.WIDTH / 2) - (w / 2)
 y = (inky_display.HEIGHT / 2) - (h / 2)
