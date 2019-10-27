@@ -36,7 +36,7 @@ scale_size = 1
 img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
 draw = ImageDraw.Draw(img)
 
-font = ImageFont.truetype(HankenGroteskBold, int(20 * scale_size))
+font = ImageFont.truetype(HankenGroteskBold, int(10 * scale_size))
 
 message = get_bus_time()
 #Display at top left
