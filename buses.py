@@ -9,12 +9,12 @@ scale_size = 1
 img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
 draw = ImageDraw.Draw(img)
 
-font = ImageFont.truetype(HankenGroteskBold, int(35 * scale_size))
+font = ImageFont.truetype(HankenGroteskBold, int(20 * scale_size))
 
 message = "Hello, World! \n Ben"
-w, h = font.getsize(message)
-x = (inky_display.WIDTH / 2) - (w / 2)
-y = (inky_display.HEIGHT / 2) - (h / 2)
+x = (inky_display.WIDTH / 2)
+#Display at top
+y = 0
 
 draw.text((x, y), message, inky_display.RED, font)
 inky_display.set_image(img)
