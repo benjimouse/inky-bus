@@ -74,20 +74,21 @@ yesterday = today - one_day
 
 reRunTime = yesterday
 while True:
-#    if datetime.now(timezone.utc) > reRunTime:
+    oldTimes = busTimes
     busTimes = get_bus_time()
-    reRunTime = busTimes[0]['ttl']
-    for bus in busTimes:
-        if bus['ttl'] < reRunTime:
-            reRunTime = bus['ttl']
-    print ('Num busses = {}'.format(len(busTimes)))
-    print  (formatMessage(busTimes))
-    if args.type == "inky":
-        displayOnInky()
-    print (reRunTime)
-    timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
-    maxSleep = 20
-    timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
+    if(oldTimes.cmp(busTimes != 0)):
+        reRunTime = busTimes[0]['ttl']
+        for bus in busTimes:
+            if bus['ttl'] < reRunTime:
+                reRunTime = bus['ttl']
+        print ('Num busses = {}'.format(len(busTimes)))
+        print  (formatMessage(busTimes))
+        if args.type == "inky":
+            displayOnInky()
+        print (reRunTime)
+        timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
+        maxSleep = 20
+        timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
     sleep(timeToSleep)
 else:
     print('Ended')
