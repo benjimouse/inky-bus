@@ -1,11 +1,12 @@
-from inky import InkyPHAT
 from PIL import Image, ImageFont, ImageDraw
-from font_fredoka_one import FredokaOne
+from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
+from font_intuitive import Intuitive
+from inky import InkyPHAT, InkyWHAT
 
 img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
 draw = ImageDraw.Draw(img)
 
-font = ImageFont.truetype(FredokaOne, 22)
+font = ImageFont.truetype(HankenGroteskBold, int(35 * scale_size))
 
 message = "Hello, World!"
 w, h = font.getsize(message)
