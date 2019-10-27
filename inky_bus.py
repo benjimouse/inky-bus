@@ -7,6 +7,9 @@ argParser = argparse.ArgumentParser()
 argParser.add_argument('--type', '-t', type=str, required=True, choices=["inky", "print"], help="Display to inky or to cmd line")
 args = argParser.parse_args()
 
+_lastCheck = datetime.now()
+
+    
 
 def get_bus_time():
     resp = requests.get('https://api.tfl.gov.uk/StopPoint/490007732N/arrivals')
@@ -14,13 +17,9 @@ def get_bus_time():
         raise ApiError('GET /arrivals/ {}'.format(resp.status_code))
     sortedArrival = resp.json()
     sortedArrival.sort(key=lambda k: k['timeToStation'], reverse=False)
-    
-    reRunTime = isoparse(sortedArrival[0]['timeToLive'])
-    print('{}'.format(reRunTime))
+    _lastCheck = datetime.now()
     arrivals = []
     for bus in sortedArrival:
-        if isoparse(bus['timeToLive']) < reRunTime:
-            reRunTime = isoparse(bus['timeToLive'])
             
        # print('{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']))
         #print('time to live {}'.format(isoparse(bus['timeToLive'])))
@@ -35,7 +34,8 @@ def get_bus_time():
     return arrivals
 
 def formatMessage(arrivals):
-    message = 'Last Check = {}\n'.format(datetime.now().strftime('%H:%M:%S'))
+    #message = '{}\n'.format(datetime.now().strftime('%H:%M:%S'))
+    message = ''
     for bus in arrivals:
 
         minutes = bus['timeToStation']//60
@@ -44,7 +44,7 @@ def formatMessage(arrivals):
     
     return message
 
-def displayOnInky():
+def displayOnInky(busTimes):
     from PIL import Image, ImageFont, ImageDraw
     from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
     from font_intuitive import Intuitive
@@ -56,16 +56,26 @@ def displayOnInky():
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype(HankenGroteskBold, int(90 / (len(busTimes)+1)))
+    lastCheckFont = ImageFont.truetype(HankenGroteskBold, 20)
+    lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
+    messageFont = ImageFont.truetype(HankenGroteskBold, int(70 / (len(busTimes)+1)))
     message = formatMessage(busTimes)
     
     #Display at top left
     x = 0
     y = 0
 
-    draw.text((x, y), message, inky_display.RED, font)
+    draw.text((x, y), message, inky_display.BLACK, messageFont)
     inky_display.set_image(img)
     inky_display.show()
+
+def displayOnCmd(busTimes):
+    print('**************\n')
+    print('{}\n'.format(_lastCheck.strftime('%H:%M:%S')))
+    print ('Num busses = {}'.format(len(busTimes)))
+    print(formatMessage(busTimes))
+    print('**************\n')
+
 
 # Run only if I need to 
 today = datetime.now(timezone.utc)
@@ -86,10 +96,9 @@ while True:
         for bus in busTimes:
             if bus['ttl'] < reRunTime:
                 reRunTime = bus['ttl']
-        print ('Num busses = {}'.format(len(busTimes)))
-        print  (formatMessage(busTimes))
+        displayOnCmd(busTimes)
         if args.type == "inky":
-            displayOnInky()
+            displayOnInky(busTimes)
         timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
         timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
     else:
