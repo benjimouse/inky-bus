@@ -45,8 +45,10 @@ def formatMessage(arrivals):
 busTimes = get_bus_time()
 print ('Num busses = {}'.format(len(busTimes)))
 print  (formatMessage(busTimes))
-
 if args.type == "inky":
+    displayOnInky()
+
+def displayOnInky():
     from PIL import Image, ImageFont, ImageDraw
     from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
     from font_intuitive import Intuitive
