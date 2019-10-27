@@ -1,10 +1,10 @@
 import requests
+import argparse
 from datetime import datetime, timezone
 from dateutil.parser import parser, isoparse
-from PIL import Image, ImageFont, ImageDraw
-from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
-from font_intuitive import Intuitive
-from inky import InkyPHAT
+argParser = argparse.ArgumentParser()
+argParser.add_argument('--type', '-t', type=str, required=True, choices=["inky", "print"], help="Display to inky or to cmd line")
+args = argParser.parse_args()
 
 
 def get_bus_time():
@@ -16,39 +16,55 @@ def get_bus_time():
     
     reRunTime = isoparse(sortedArrival[0]['timeToLive'])
     print('{}'.format(reRunTime))
-    arrivals = ""
+    arrivals = []
     for bus in sortedArrival:
         if isoparse(bus['timeToLive']) < reRunTime:
             reRunTime = isoparse(bus['timeToLive'])
             
-
-        minutes = bus['timeToStation']//60
-        seconds = bus['timeToStation']%60
        # print('{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']))
         #print('time to live {}'.format(isoparse(bus['timeToLive'])))
-        arrivals = arrivals + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
+        bus_arrival = {}
+        bus_arrival['timeToStation'] = bus['timeToStation']
+        bus_arrival['lineName'] = bus['lineName']
+        bus_arrival['ttl'] = isoparse(bus['timeToLive'])
+        bus_arrival['destinationName'] = bus['destinationName']
+        arrivals.append(bus_arrival)
+       # arrivals = arrivals + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
 
     return arrivals
 
-inky_display = InkyPHAT("red")
-inky_display.set_border(inky_display.RED)
-scale_size = 1
-img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
-draw = ImageDraw.Draw(img)
+def formatMessage(arrivals):
+    message = ""
+    for bus in arrivals:
 
-font = ImageFont.truetype(HankenGroteskBold, int(10 * scale_size))
+        minutes = bus['timeToStation']//60
+        seconds = bus['timeToStation']%60
+        message = message + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
+    
+    return message
+busTimes = get_bus_time()
+print ('Num busses = {}'.format(len(busTimes)))
+print  (formatMessage(busTimes))
 
-message = get_bus_time()
-#Display at top left
-x = 0
-y = 0
+if args.type == "inky":
+    from PIL import Image, ImageFont, ImageDraw
+    from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
+    from font_intuitive import Intuitive
+    from inky import InkyPHAT
 
-draw.text((x, y), message, inky_display.RED, font)
-inky_display.set_image(img)
-inky_display.show()
+    inky_display = InkyPHAT("red")
+    inky_display.set_border(inky_display.RED)
+    scale_size = 1
+    img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
+    draw = ImageDraw.Draw(img)
 
+    font = ImageFont.truetype(HankenGroteskBold, int(10 / len(busTimes)))
+    message = formatMessage(busTimes)
+    
+    #Display at top left
+    x = 0
+    y = 0
 
-
-
-
-print  (get_bus_time())
+    draw.text((x, y), message, inky_display.RED, font)
+    inky_display.set_image(img)
+    inky_display.show()
