@@ -15,7 +15,12 @@ _lastCheck = datetime.now()
 def get_bus_time():
     resp = requests.get('https://api.tfl.gov.uk/StopPoint/490007732N/arrivals')
     if resp.status_code != 200:
-        raise ApiError('GET /arrivals/ {}'.format(resp.status_code))
+        if args.cmd=='true':
+            print('Failed - {}'.format(resp.status_code))
+            print('{}'.format(resp.text))
+        # I'll assume that if this is failing that there's a timeout issue
+        sleep(60)
+
     sortedArrival = resp.json()
     sortedArrival.sort(key=lambda k: k['timeToStation'], reverse=False)
     _lastCheck = datetime.now()
