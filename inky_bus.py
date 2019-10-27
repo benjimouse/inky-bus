@@ -1,6 +1,7 @@
 import requests
 import argparse
-from datetime import datetime, timezone
+from time import sleep
+from datetime import datetime, timezone, date, timedelta
 from dateutil.parser import parser, isoparse
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--type', '-t', type=str, required=True, choices=["inky", "print"], help="Display to inky or to cmd line")
@@ -66,8 +67,27 @@ def displayOnInky():
     inky_display.set_image(img)
     inky_display.show()
 
-busTimes = get_bus_time()
-print ('Num busses = {}'.format(len(busTimes)))
-print  (formatMessage(busTimes))
-if args.type == "inky":
-    displayOnInky()
+# Run only if I need to 
+today = datetime.now(timezone.utc)
+one_day = timedelta(days=1)
+yesterday = today - one_day
+
+reRunTime = yesterday
+while True:
+#    if datetime.now(timezone.utc) > reRunTime:
+    busTimes = get_bus_time()
+    reRunTime = busTimes[0]['ttl']
+    for bus in busTimes:
+        if bus['ttl'] < reRunTime:
+            reRunTime = bus['ttl']
+    print ('Num busses = {}'.format(len(busTimes)))
+    print  (formatMessage(busTimes))
+    if args.type == "inky":
+        displayOnInky()
+    print (reRunTime)
+    timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
+    maxSleep = 20
+    timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
+    sleep(timeToSleep)
+else:
+    print('Ended')
