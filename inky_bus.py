@@ -35,7 +35,7 @@ def get_bus_time():
     return arrivals
 
 def formatMessage(arrivals):
-    message = ""
+    message = 'Last Check = {}\n'.format(datetime.now().strftime('%H:%M:%S'))
     for bus in arrivals:
 
         minutes = bus['timeToStation']//60
@@ -56,7 +56,7 @@ def displayOnInky():
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype(HankenGroteskBold, int(90 / len(busTimes)))
+    font = ImageFont.truetype(HankenGroteskBold, int(90 / (len(busTimes)+1)))
     message = formatMessage(busTimes)
     
     #Display at top left
@@ -73,10 +73,15 @@ one_day = timedelta(days=1)
 yesterday = today - one_day
 
 reRunTime = yesterday
+oldTimes = []
+maxSleep = 20
+
 while True:
-    oldTimes = busTimes
+    print ('getting times')
     busTimes = get_bus_time()
-    if(oldTimes.cmp(busTimes != 0)):
+    if oldTimes != busTimes:
+        print('times changed')
+        oldTimes = busTimes
         reRunTime = busTimes[0]['ttl']
         for bus in busTimes:
             if bus['ttl'] < reRunTime:
@@ -85,10 +90,11 @@ while True:
         print  (formatMessage(busTimes))
         if args.type == "inky":
             displayOnInky()
-        print (reRunTime)
         timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
-        maxSleep = 20
         timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
+    else:
+        print('times not changed')
+        timeToSleep = maxSleep
     sleep(timeToSleep)
 else:
     print('Ended')
