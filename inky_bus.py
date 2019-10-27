@@ -39,7 +39,7 @@ def formatMessage(arrivals):
 
         minutes = bus['timeToStation']//60
         seconds = bus['timeToStation']%60
-        message = message + '{} {:02d}mins {:02d}secs {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
+        message = message + '{} {:02d}m{:02d}s {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
     
     return message
 
