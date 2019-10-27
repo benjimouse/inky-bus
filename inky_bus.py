@@ -58,7 +58,7 @@ if args.type == "inky":
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype(HankenGroteskBold, int(10 / len(busTimes)))
+    font = ImageFont.truetype(HankenGroteskBold, int(90 / len(busTimes)))
     message = formatMessage(busTimes)
     
     #Display at top left
