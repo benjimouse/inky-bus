@@ -11,7 +11,7 @@ draw = ImageDraw.Draw(img)
 
 font = ImageFont.truetype(HankenGroteskBold, int(20 * scale_size))
 
-message = "Hello, World! \n Ben"
+message = 
 #Display at top left
 x = 0
 y = 0
