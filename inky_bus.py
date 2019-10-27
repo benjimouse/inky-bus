@@ -57,14 +57,14 @@ def displayOnInky(busTimes):
     draw = ImageDraw.Draw(img)
 
     lastCheckFont = ImageFont.truetype(HankenGroteskBold, 20)
-    lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
+    lastCheckMessage = 'Last Check:{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
     messageFont = ImageFont.truetype(HankenGroteskBold, int(70 / (len(busTimes)+1)))
     message = formatMessage(busTimes)
     
     #Display at top left
     x = 0
     y = 0
-
+    draw.text((x, y), lastCheckMessage, inky_display.RED, lastCheckFont)
     draw.text((x, y), message, inky_display.BLACK, messageFont)
     inky_display.set_image(img)
     inky_display.show()
