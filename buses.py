@@ -1,7 +1,10 @@
 from PIL import Image, ImageFont, ImageDraw
 from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
 from font_intuitive import Intuitive
-from inky import InkyPHAT, InkyWHAT
+from inky import InkyPHAT
+
+inky_display = InkyPHAT("red")
+inky_display.set_border(inky_display.WHITE)
 
 img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
 draw = ImageDraw.Draw(img)
