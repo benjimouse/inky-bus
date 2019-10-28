@@ -42,7 +42,7 @@ def formatMessage(arrivals):
 
 def displayOnInky(busTimes):
     from PIL import Image, ImageFont, ImageDraw
-    from font_anonymous import AnonymousProRegular
+    from font_anonymous_pro import AnonymousProRegular
     from inky import InkyPHAT
 
     inky_display = InkyPHAT("red")
