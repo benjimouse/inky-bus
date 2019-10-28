@@ -26,6 +26,8 @@ def get_bus_time():
         bus_arrival['lineName'] = bus['lineName']
         bus_arrival['ttl'] = isoparse(bus['timeToLive'])
         bus_arrival['destinationName'] = bus['destinationName']
+        bus_arrival['stopName'] = bus['stationName']
+        bus_arrival['stopCode'] = bus['platformName']
         arrivals.append(bus_arrival)
 
     return arrivals
@@ -51,10 +53,10 @@ def displayOnInky(busTimes):
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
 
-    lastCheckSize = 15
+    lastCheckSize = 12
     lastCheckFont = ImageFont.truetype(HankenGroteskMedium, lastCheckSize)
-    lastCheckMessage = '{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'))
-    messageFont = ImageFont.truetype(HankenGroteskMedium, int(78 / (len(busTimes))))
+    lastCheckMessage = '{} {} {}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'),busTimes[0]['stopName'], busTimes[0]['stopCode'])
+    messageFont = ImageFont.truetype(HankenGroteskMedium, int(80 / (len(busTimes))))
     message = formatMessage(busTimes)
     
     #Display at top left
@@ -67,7 +69,10 @@ def displayOnInky(busTimes):
 
 def displayOnCmd(busTimes):
     print('**************\n')
-    print('{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S')))
+    #print('{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S')))
+    print('{} {} {}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'),busTimes[0]['stopName'], busTimes[0]['stopCode']))
+    if len(busTimes) > 0:
+        print('Stop - {}, Code - {}'.format(busTimes[0]['stopName'], busTimes[0]['stopCode']))
     print ('Num busses = {}'.format(len(busTimes)))
     print(formatMessage(busTimes))
     print('**************\n')
