@@ -25,7 +25,7 @@ To run on an inky phat you'll need to install the bits here:
 
 ```python3 inky_bus.py --inky "true"```
 
-Congrats you now know what buses you can get from a very specifi bus stop that's near (ish) my house!
+Congrats you now know what buses you can get from a very specific bus stop that's near (ish) my house!
 
 You can also turn off the output to the command line.
 
