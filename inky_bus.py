@@ -6,11 +6,7 @@ from dateutil.parser import parser, isoparse
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
 argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
-args = argParser.parse_args()
-
-_lastCheck = datetime.now()
-
-    
+args = argParser.parse_args()    
 
 def get_bus_time():
     resp = requests.get('https://api.tfl.gov.uk/StopPoint/490007732N/arrivals')
@@ -23,7 +19,6 @@ def get_bus_time():
 
     sortedArrival = resp.json()
     sortedArrival.sort(key=lambda k: k['timeToStation'], reverse=False)
-    _lastCheck = datetime.now()
     arrivals = []
     for bus in sortedArrival:
         bus_arrival = {}
@@ -58,7 +53,7 @@ def displayOnInky(busTimes):
 
     lastCheckSize = 15
     lastCheckFont = ImageFont.truetype(HankenGroteskMedium, lastCheckSize)
-    lastCheckMessage = '{}\n'.format(_lastCheck.strftime('%H:%M:%S'))
+    lastCheckMessage = '{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'))
     messageFont = ImageFont.truetype(HankenGroteskMedium, int(78 / (len(busTimes))))
     message = formatMessage(busTimes)
     
@@ -72,7 +67,7 @@ def displayOnInky(busTimes):
 
 def displayOnCmd(busTimes):
     print('**************\n')
-    print('{}\n'.format(_lastCheck.strftime('%H:%M:%S')))
+    print('{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S')))
     print ('Num busses = {}'.format(len(busTimes)))
     print(formatMessage(busTimes))
     print('**************\n')
