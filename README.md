@@ -34,3 +34,7 @@ You can also turn off the output to the command line.
 So to set it running in the background on a raspberry pi and not to worry about it...
 
 ```python3 inky_bus.py --inky "true" --cmd "false" &```
+
+You can also use a stop point for a bus stop that's more helpful to you (still defaults to one near me). I've used the api's here: https://api-portal.tfl.gov.uk/docs to figure out stop points.
+
+```python3 inky_bus.py --stop "490007732S"```
