@@ -6,10 +6,11 @@ from dateutil.parser import parser, isoparse
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
 argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
+argParser.add_argument('--stop', '-s', type=str, required=False, default="490007732N", help="The stop point for the bus stop.")
 args = argParser.parse_args()    
 
 def get_bus_time():
-    resp = requests.get('https://api.tfl.gov.uk/StopPoint/490007732N/arrivals')
+    resp = requests.get('https://api.tfl.gov.uk/StopPoint/{}/arrivals'.format(args.stop))
     if resp.status_code != 200:
         if args.cmd=='true':
             print('Failed - {}'.format(resp.status_code))
