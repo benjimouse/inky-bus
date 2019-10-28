@@ -89,7 +89,7 @@ maxSleep = 20
 
 while True:
     busTimes = get_bus_time()
-    if oldTimes != busTimes:
+    if oldTimes != busTimes and len(busTimes) >0 :
         oldTimes = busTimes
         reRunTime = busTimes[0]['ttl']
         for bus in busTimes:
