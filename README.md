@@ -29,7 +29,7 @@ Congrats you now know what buses you can get from a very specific bus stop that'
 
 You can also turn off the output to the command line.
 
-```python3 inky_bus.py --cmd "false"```
+```python3 inky_bus.py --cmd "true"```
 
 So to set it running in the background on a raspberry pi and not to worry about it...
 
