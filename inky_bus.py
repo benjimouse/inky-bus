@@ -7,6 +7,7 @@ argParser = argparse.ArgumentParser()
 argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
 argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
 argParser.add_argument('--stop', '-s', type=str, required=False, default="490007732N", help="The stop point for the bus stop.")
+argParser.add_argument('--loop', '-l', type=str, required=False, default="false", help="Should Loop the requests itself, setting this to true will get the requests looping, but... It appears to crash after about an hour running via chron would be better.")
 args = argParser.parse_args()    
 
 def get_bus_time():
@@ -87,25 +88,30 @@ yesterday = today - one_day
 reRunTime = yesterday
 oldTimes = []
 maxSleep = 20
-
-while True:
-    busTimes = get_bus_time()
-    if oldTimes != busTimes and len(busTimes) >0 :
-        oldTimes = busTimes
-        reRunTime = busTimes[0]['ttl']
-        for bus in busTimes:
-            if bus['ttl'] < reRunTime:
-                reRunTime = bus['ttl']
-        if args.cmd == "true":
-            displayOnCmd(busTimes)
-        if args.inky == "true":
-            displayOnInky(busTimes)
-        timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
-        timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
+if args.loop == "true":
+    while True:
+        busTimes = get_bus_time()
+        if oldTimes != busTimes and len(busTimes) >0 :
+            oldTimes = busTimes
+            reRunTime = busTimes[0]['ttl']
+            for bus in busTimes:
+                if bus['ttl'] < reRunTime:
+                    reRunTime = bus['ttl']
+            if args.cmd == "true":
+                displayOnCmd(busTimes)
+            if args.inky == "true":
+                displayOnInky(busTimes)
+            timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
+            timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
+        else:
+            if args.cmd == "true":
+                print('No change')
+            timeToSleep = maxSleep
+        sleep(timeToSleep)
     else:
-        if args.cmd == "true":
-            print('No change')
-        timeToSleep = maxSleep
-    sleep(timeToSleep)
+        print('Ended')
 else:
-    print('Ended')
+    if args.cmd == "true":
+        displayOnCmd(get_bus_time())
+    if args.inky == "true":
+        displayOnInky(get_bus_time())
