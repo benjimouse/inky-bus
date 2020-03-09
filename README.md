@@ -38,3 +38,6 @@ So to set it running in the background on a raspberry pi and not to worry about 
 You can also use a stop point for a bus stop that's more helpful to you (still defaults to one near me). I've used the api's here: https://api-portal.tfl.gov.uk/docs to figure out stop points.
 
 ```python3 inky_bus.py --stop "490007732S"```
+
+I've gone with adding this to the crontab so that things run a bit more smoothly than the horrid sleep.
+```*/2 * * * * /home/pi/git_repos/inky-bus/inky_bus.py -i "true" -c "false"```
