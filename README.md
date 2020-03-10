@@ -40,4 +40,5 @@ You can also use a stop point for a bus stop that's more helpful to you (still d
 ```python3 inky_bus.py --stop "490007732S"```
 
 I've gone with adding this to the crontab, this will have it run every 2 minutes.
+
 ```*/2 * * * * /home/pi/git_repos/inky-bus/inky_bus.py -i "true" -c "false"```
