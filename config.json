@@ -1,0 +1,4 @@
+{
+    "stopEndPoint": "https://api.tfl.gov.uk/StopPoint/{}/arrivals",
+    "stop": "490007732N"
+}

@@ -1,23 +1,32 @@
 import requests
 import argparse
+import json
+import os
 from time import sleep
 from datetime import datetime, timezone, date, timedelta
 from dateutil.parser import parser, isoparse
 argParser = argparse.ArgumentParser()
 argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
 argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
-argParser.add_argument('--stop', '-s', type=str, required=False, default="490007732N", help="The stop point for the bus stop.")
-argParser.add_argument('--loop', '-l', type=str, required=False, default="false", help="Should Loop the requests itself, setting this to true will get the requests looping, but... It appears to crash after about an hour running via chron would be better.")
+argParser.add_argument('--stop', '-s', type=str, required=False, default="", help="The stop point for the bus stop.")
+argParser.add_argument('--loop', '-l', type=str, required=False, choices=["true", "false"], default="false", help="Should Loop the requests itself, setting this to true will get the requests looping, but... It appears to crash after about an hour running via chron would be better.")
 args = argParser.parse_args()    
 
+# Set-up config
+script_dir = os.path.dirname(__file__)
+file_path = os.path.join(script_dir, 'config.json')
+with open(file_path) as config_file:
+  config = json.loads(config_file.read())
+
+stopEndPoint = config['stopEndPoint']
+stop = (args.stop, config['stop'])[args.stop == '']
+
 def get_bus_time():
-    resp = requests.get('https://api.tfl.gov.uk/StopPoint/{}/arrivals'.format(args.stop))
+    resp = requests.get(stopEndPoint.format(stop))
     if resp.status_code != 200:
         if args.cmd=='true':
             print('Failed - {}'.format(resp.status_code))
             print('{}'.format(resp.text))
-        # I'll assume that if this is failing that there's a timeout issue
-        sleep(60)
 
     sortedArrival = resp.json()
     sortedArrival.sort(key=lambda k: k['timeToStation'], reverse=False)
