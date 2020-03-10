@@ -71,7 +71,6 @@ def displayOnInky(busTimes):
 
 def displayOnCmd(busTimes):
     print('**************\n')
-    #print('{}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S')))
     print('{} {} {}\n'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'),busTimes[0]['stopName'], busTimes[0]['stopCode']))
     if len(busTimes) > 0:
         print('Stop - {}, Code - {}'.format(busTimes[0]['stopName'], busTimes[0]['stopCode']))
@@ -79,39 +78,7 @@ def displayOnCmd(busTimes):
     print(formatMessage(busTimes))
     print('**************\n')
 
-
-# Run only if I need to 
-today = datetime.now(timezone.utc)
-one_day = timedelta(days=1)
-yesterday = today - one_day
-
-reRunTime = yesterday
-oldTimes = []
-maxSleep = 20
-if args.loop == "true":
-    while True:
-        busTimes = get_bus_time()
-        if oldTimes != busTimes and len(busTimes) >0 :
-            oldTimes = busTimes
-            reRunTime = busTimes[0]['ttl']
-            for bus in busTimes:
-                if bus['ttl'] < reRunTime:
-                    reRunTime = bus['ttl']
-            if args.cmd == "true":
-                displayOnCmd(busTimes)
-            if args.inky == "true":
-                displayOnInky(busTimes)
-            timeToSleep = abs((reRunTime - datetime.now(timezone.utc)).seconds)+1
-            timeToSleep = maxSleep if maxSleep < timeToSleep else timeToSleep
-        else:
-            if args.cmd == "true":
-                print('No change')
-            timeToSleep = maxSleep
-        sleep(timeToSleep)
-    else:
-        print('Ended')
-else:
-    if args.cmd == "true":
-        displayOnCmd(get_bus_time())
-    if args.inky == "true":
-        displayOnInky(get_bus_time())
+if args.cmd == "true":
+    displayOnCmd(get_bus_time())
+if args.inky == "true":
+    displayOnInky(get_bus_time())
