@@ -16,6 +16,11 @@ I found that I had to enable I2C (found in raspi-config / Interfacing Options) a
 
 Have a play and then...
 
+## Need to do
+You'll need to update the file `example_config.json` to `config.json` so that you may also want to add a different default bus stop.
+
+I've used the api's here: https://api-portal.tfl.gov.uk/docs to figure out stop points.
+
 ## How to run
 To run so that it outputs to the console.
 
@@ -35,7 +40,7 @@ So to set it running in the background on a raspberry pi and not to worry about 
 
 ```python3 inky_bus.py --inky "true" --cmd "false" &```
 
-You can also use a stop point for a bus stop that's more helpful to you (still defaults to one near me). I've used the api's here: https://api-portal.tfl.gov.uk/docs to figure out stop points.
+You can also override the stop from the config file.
 
 ```python3 inky_bus.py --stop "490007732S"```
 

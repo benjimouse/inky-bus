@@ -1,6 +1,5 @@
 def displayInky(output):
     from PIL import Image, ImageFont, ImageDraw
-    from font_hanken_grotesk import HankenGroteskMedium
     from inky import InkyPHAT
 
     inky_display = InkyPHAT("red")
@@ -10,8 +9,8 @@ def displayInky(output):
     draw = ImageDraw.Draw(img)
 
     headerSize = 12
-    headerFont = ImageFont.truetype(HankenGroteskMedium, headerSize)
-    messageFont = ImageFont.truetype(HankenGroteskMedium, int(80 / (output['bodyLines'])))
+    headerFont = ImageFont.truetype("/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf", headerSize)
+    messageFont = ImageFont.truetype("/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf", int(75 / (output['bodyLines'])))
     
     x = 0
     y = 0

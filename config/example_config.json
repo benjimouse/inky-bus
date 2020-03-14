@@ -1,4 +1,6 @@
 {
     "stopEndPoint": "https://api.tfl.gov.uk/StopPoint/{}/arrivals",
-    "stop": "490007732N"
+    "stop": "490007732N",
+    "countryEndPoint": "http://countries.trevorblades.com/",
+    "covidEndPoint": "https://coronavirus-19-api.herokuapp.com/countries/{}"
 }
