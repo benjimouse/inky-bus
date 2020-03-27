@@ -47,3 +47,6 @@ def formatArrivals(arrivals):
         message = message + '{} {:02d}m{:02d}s {}'.format(bus['lineName'], minutes, seconds, bus['destinationName']) + '\n'
     
     return message
+
+def getOutput(endPoint, code):
+    return mapBusTimesToOutput(getBusTime(endPoint, code))
