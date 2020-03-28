@@ -23,7 +23,7 @@ def getOutput(endPoint, code):
     output['header'] = '{}'.format(datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M'))
     output['subHeader'] = '{}'.format(details['country'])
     output['body'] = ''
-    output['body'] = output['body'] +   '            Total             Today'
+    output['body'] = output['body'] +   '        Total         Today'
     output['body'] = output['body'] + '\nCases:  {}   {}'.format('{}'.format(details['cases']).rjust(6), '{}'.format(details['todayCases']).rjust(6))
     output['body'] = output['body'] + '\nDeaths: {}   {}'.format('{}'.format(details['deaths']).rjust(6), '{}'.format(details['todayDeaths']).rjust(6))
     output['body'] = output['body'] + '\nPer million'
