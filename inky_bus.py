@@ -7,7 +7,7 @@ argParser = argparse.ArgumentParser()
 argParser.add_argument('--inky', '-i', type=str, required=False, choices=["true", "false"], default="false", help="Display to inky default false")
 argParser.add_argument('--cmd', '-c', type=str, required=False, choices=["true", "false"], default="true", help="Display to command line default true")
 argParser.add_argument('--stop', '-s', type=str, required=False, default="", help="The stop point for the bus stop.")
-argParser.add_argument('--function', '-f', type=str, required=False, choices=["bus", "country", "covid"], default="bus", help="What functionality to use")
+argParser.add_argument('--function', '-f', type=str, required=False, choices=["bus", "country", "covid", "ukcovid"], default="bus", help="What functionality to use")
 argParser.add_argument('--country', '-ct', type=str, required=False, default="", help="What country to look at if left empty a random country is chosen.")
 args = argParser.parse_args()
 
@@ -19,6 +19,10 @@ if args.function == "country":
 elif args.function == "covid":
     from covid import getOutput
     endPoint = config['covidEndPoint']
+    code = args.country
+elif args.function == "ukcovid":
+    from ukcovid import getOutput
+    endPoint = config['ukCovidEndPoint']
     code = args.country
 else:
     from bus_times import getOutput
