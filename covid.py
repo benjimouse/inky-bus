@@ -29,11 +29,11 @@ def getOutput(endPoint, code):
     output['subHeader'] = '{}'.format(details['country'])
     output['body'] = ''
     output['body'] = output['body'] +   '         Total    Today'
-    output['body'] = output['body'] + '\nCases:  {}   {}'.format('{}'.format(details['cases']).rjust(6), '{}'.format(details['todayCases']).rjust(6))
-    output['body'] = output['body'] + '\nDeaths: {}   {}'.format('{}'.format(details['deaths']).rjust(6), '{}'.format(details['todayDeaths']).rjust(6))
+    output['body'] = output['body'] + '\nCases:  {}   {}'.format('{:,}'.format(details['cases']).rjust(6), '{:,}'.format(details['todayCases']).rjust(6))
+    output['body'] = output['body'] + '\nDeaths: {}   {}'.format('{:,}'.format(details['deaths']).rjust(6), '{:,}'.format(details['todayDeaths']).rjust(6))
     output['body'] = output['body'] + '\nPer million'
-    output['body'] = output['body'] + '\nCases:  {} Deaths: {}'.format('{}'.format(details['casesPerOneMillion']).rjust(6), '{}'.format(details['deathsPerOneMillion']).rjust(6))
-    output['body'] = output['body'] + '\nRecovered: {}'.format('{}'.format(details['recovered']).rjust(6))
+    output['body'] = output['body'] + '\nCases:  {} Deaths: {}'.format('{:,}'.format(details['casesPerOneMillion']).rjust(6), '{:,}'.format(details['deathsPerOneMillion']).rjust(6))
+    output['body'] = output['body'] + '\nRecovered: {}'.format('{:,}'.format(details['recovered']).rjust(6))
     output['bodyLines'] = 6
     return output
     

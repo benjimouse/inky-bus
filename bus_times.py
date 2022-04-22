@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+import pytz
 from dateutil.parser import parser, isoparse
 from datetime import datetime, timezone
 
@@ -27,8 +28,9 @@ def getBusTime(stopEndPoint, stop):
     return arrivals
 
 def mapBusTimesToOutput(busTimes):
+    london = pytz.timezone("Europe/London")
     output = {}
-    output['header'] = '{}'.format(datetime.now(timezone.utc).strftime('%H:%M:%S'))
+    output['header'] = '{}'.format(datetime.now(london).strftime('%H:%M:%S'))
     output['subHeader'] = '{} busses'.format(len(busTimes))
     output['body'] = ''
     output['bodyLines'] = len(busTimes)
